@@ -14,6 +14,9 @@ const theme = createTheme({
       main: "#FFC54D",
       contrastText: "black",
     },
+    background: {
+      default: "#eeeeee",
+    },
   },
   shape: {
     // borderRadius: 0,

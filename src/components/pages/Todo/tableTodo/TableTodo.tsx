@@ -1,11 +1,11 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import Badge from "components/shared/badge/Badge";
 import { useTodoList } from "stores/Todos";
 
 const TableTodo = () => {
-  const { todo, deleteTodo } = useTodoList();
+  const { todo, callUpdate, deleteTodo } = useTodoList();
 
   const getItem = (status: string) => {
     switch (status) {
@@ -16,6 +16,10 @@ const TableTodo = () => {
       default:
         return <Badge color="complete">{status}</Badge>;
     }
+  };
+
+  const callUpdateItem = (id: string) => {
+    callUpdate(id);
   };
 
   const handleDelete = (id: string) => {
@@ -42,7 +46,7 @@ const TableTodo = () => {
               <TableCell align="left">{item.name}</TableCell>
               <TableCell align="center">{getItem(item.status)}</TableCell>
               <TableCell align="center">
-                <span>
+                <span onClick={() => callUpdateItem(item.id)}>
                   <EditIcon color="warning" />
                 </span>
                 <span onClick={() => handleDelete(item.id)}>

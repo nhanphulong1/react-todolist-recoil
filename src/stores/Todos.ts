@@ -22,17 +22,39 @@ const todoListState = atom({
   ] as Todo[],
 });
 
+const statusUpdate = atom({
+  key: "updateTodoList",
+  default: {
+    id: "",
+    name: "",
+    status: "",
+    type: false,
+  },
+});
+
 export const useTodoList = () => {
   const [todo, setTodo] = useRecoilState(todoListState);
+  const [sTodo, setSTodo] = useRecoilState(statusUpdate);
+
+  const callUpdate = (id: string) => {
+    let arr = todo.filter((obj) => obj.id === id);
+    if (arr.length > 0) {
+      setSTodo({ ...arr[0], type: !sTodo.type });
+    }
+  };
 
   const addTodo = (name: string, status: string) => {
     let id: number = Number(todo[todo.length - 1].id) + 1;
     setTodo((oldTodo) => [...oldTodo, { id: id + "", name: name, status: status }]);
   };
 
+  const updateTodo = (id: string, name: string, status: string) => {
+    setTodo((oldTodo) => oldTodo.map((val) => (val.id === id ? { id, name, status } : val)));
+  };
+
   const deleteTodo = (id: string) => {
     setTodo((oldTodo) => oldTodo.filter((obj) => obj.id !== id));
   };
 
-  return { todo, addTodo, deleteTodo };
+  return { todo, sTodo, addTodo, updateTodo, deleteTodo, callUpdate };
 };
